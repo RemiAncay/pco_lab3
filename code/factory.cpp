@@ -49,6 +49,8 @@ void Factory::buildItem() {
 
     // TODO
 
+
+
     //Temps simulant l'assemblage d'un objet.
     PcoThread::usleep((rand() % 100) * 100000);
 
@@ -74,7 +76,7 @@ void Factory::run() {
     }
     interface->consoleAppendText(uniqueId, "[START] Factory routine");
 
-    while (true /* TODO terminaison*/) {
+    while (!needsToStop()) {
         if (verifyResources()) {
             buildItem();
         } else {
