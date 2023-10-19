@@ -3,6 +3,10 @@
 #include <random>
 #include <cassert>
 
+void Seller::requestStop() {
+    stopRequested = true;
+}
+
 Seller *Seller::chooseRandomSeller(std::vector<Seller *> &sellers) {
     assert(sellers.size());
     std::vector<Seller*> out;

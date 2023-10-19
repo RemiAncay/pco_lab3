@@ -23,7 +23,7 @@ public:
      * @brief Seller
      * @param money money money !
      */
-    Seller(int money, int uniqueId) : money(money), uniqueId(uniqueId) {}
+    Seller(int money, int uniqueId) : money(money), uniqueId(uniqueId), stopRequested(false) {}
 
     /**
      * @brief getItemsForSale
@@ -38,6 +38,11 @@ public:
      * @return La facture : côut de la ressource * le nombre, 0 si indisponible
      */
     virtual int trade(ItemType what, int qty) = 0;
+
+    /**
+     * @brief Indique au Seller qu'il doit arrêter de travailler
+     */
+    void requestStop();
 
     /**
      * @brief chooseRandomSeller
@@ -64,6 +69,8 @@ protected:
     std::map<ItemType, int> stocks;
     int money;
     int uniqueId;
+
+    bool stopRequested;
 };
 
 #endif // SELLER_H
