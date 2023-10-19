@@ -20,7 +20,16 @@ std::map<ItemType, int> Extractor::getItemsForSale() {
 
 int Extractor::trade(ItemType it, int qty) {
     // TODO
-    test
+    for( auto item : this->getItemsForSale())
+    {
+        if(item.first == it)
+        {
+            if(item.second >= qty)
+            {
+                return getCostPerUnit(it) * qty;
+            }
+        }
+    }
 
     return 0;
 }
