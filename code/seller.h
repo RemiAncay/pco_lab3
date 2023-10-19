@@ -47,7 +47,7 @@ public:
     /**
      * @return true si l'arrêt a été demandé, sinon false
      */
-    bool stopRequested() const;
+    bool needsToStop() const;
 
     /**
      * @brief chooseRandomSeller
