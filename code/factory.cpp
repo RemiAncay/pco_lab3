@@ -91,6 +91,16 @@ std::map<ItemType, int> Factory::getItemsForSale() {
 
 int Factory::trade(ItemType it, int qty) {
     // TODO
+    for( auto item : this->getItemsForSale())
+    {
+        if(item.first == it)
+        {
+            if(item.second >= qty)
+            {
+                return getCostPerUnit(it) * qty;
+            }
+        }
+    }
     return 0;
 }
 
