@@ -20,6 +20,7 @@ std::map<ItemType, int> Extractor::getItemsForSale() {
 
 int Extractor::trade(ItemType it, int qty) {
     // TODO
+    test
 
     return 0;
 }
