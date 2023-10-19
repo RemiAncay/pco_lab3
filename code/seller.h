@@ -45,6 +45,11 @@ public:
     void requestStop();
 
     /**
+     * @return true si l'arrêt a été demandé, sinon false
+     */
+    bool stopRequested() const;
+
+    /**
      * @brief chooseRandomSeller
      * @param sellers
      * @return Returns a random seller from the sellers vector
@@ -70,7 +75,8 @@ protected:
     int money;
     int uniqueId;
 
-    bool stopRequested;
+private:
+    bool stopRequested; // privé car les classes dérivées ne devraient pas avoir le droit d'annuler l'arrêt
 };
 
 #endif // SELLER_H

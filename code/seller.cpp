@@ -7,6 +7,10 @@ void Seller::requestStop() {
     stopRequested = true;
 }
 
+bool Seller::needsToStop() const {
+    return stopRequested;
+}
+
 Seller *Seller::chooseRandomSeller(std::vector<Seller *> &sellers) {
     assert(sellers.size());
     std::vector<Seller*> out;
