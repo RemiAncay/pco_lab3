@@ -43,22 +43,26 @@ bool Factory::verifyResources() {
             return false;
         }
     }
-
     return true;
 }
 
 void Factory::buildItem() {
+    startTransaction();
 
-    // TODO
+    if(verifyResources()) {
+        auto employee = getEmployeeThatProduces(itemBuilt);
+        auto cost = getEmployeeSalary(employee);
 
+        //Temps simulant l'assemblage d'un objet.
+        PcoThread::usleep((rand() % 100) * 10 * TIME_MULTIPLIER);
 
+        money -= cost;
+        ++stocks[itemBuilt];
 
-    //Temps simulant l'assemblage d'un objet.
-    PcoThread::usleep((rand() % 100) * 10 * TIME_MULTIPLIER);
+        interface->consoleAppendText(uniqueId, "Factory have build a new object");
+    }
 
-    // TODO
-
-    interface->consoleAppendText(uniqueId, "Factory have build a new object");
+    finishTransaction();
 }
 
 void Factory::orderResources() {
