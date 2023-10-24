@@ -2,6 +2,8 @@
 #include "costs.h"
 #include <pcosynchro/pcothread.h>
 
+#include "constants.h"
+
 WindowInterface* Extractor::interface = nullptr;
 
 Extractor::Extractor(int uniqueId, int fund, ItemType resourceExtracted)
@@ -20,17 +22,26 @@ std::map<ItemType, int> Extractor::getItemsForSale() {
 
 int Extractor::trade(ItemType it, int qty) {
     // TODO
+    startTransaction();
     for( auto item : this->getItemsForSale())
     {
         if(item.first == it)
         {
             if(item.second >= qty)
             {
-                return getCostPerUnit(it) * qty;
+                unsigned price = getCostPerUnit(it) * qty;
+
+                // mise à jour des ressources du vendeur
+                item.second -= qty;
+                money += price;
+
+                finishTransaction();
+                return price;
             }
         }
     }
 
+    finishTransaction();
     return 0;
 }
 
@@ -44,14 +55,14 @@ void Extractor::run() {
         if (money < minerCost) {
             /* Pas assez d'argent */
             /* Attend des jours meilleurs */
-            PcoThread::usleep(1000U);
+            PcoThread::usleep(TIME_MULTIPLIER / 10);
             continue;
         }
 
         /* On peut payer un mineur */
         money -= minerCost;
         /* Temps aléatoire borné qui simule le mineur qui mine */
-        PcoThread::usleep((rand() % 100 + 1) * 10000);
+        PcoThread::usleep((rand() % 100 + 1) * TIME_MULTIPLIER);
         /* Statistiques */
         nbExtracted++;
         /* Incrément des stocks */

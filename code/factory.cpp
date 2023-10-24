@@ -5,6 +5,8 @@
 #include <pcosynchro/pcothread.h>
 #include <iostream>
 
+#include "constants.h"
+
 WindowInterface* Factory::interface = nullptr;
 
 
@@ -52,7 +54,7 @@ void Factory::buildItem() {
 
 
     //Temps simulant l'assemblage d'un objet.
-    PcoThread::usleep((rand() % 100) * 100000);
+    PcoThread::usleep((rand() % 100) * 10 * TIME_MULTIPLIER);
 
     // TODO
 
@@ -64,7 +66,7 @@ void Factory::orderResources() {
     // TODO - Itérer sur les resourcesNeeded et les wholesalers disponibles
 
     //Temps de pause pour éviter trop de demande
-    PcoThread::usleep(10 * 100000);
+    PcoThread::usleep(10 * 10 * TIME_MULTIPLIER);
 
 }
 
@@ -93,17 +95,25 @@ std::map<ItemType, int> Factory::getItemsForSale() {
 }
 
 int Factory::trade(ItemType it, int qty) {
-    // TODO
+    startTransaction();
     for( auto item : this->getItemsForSale())
     {
         if(item.first == it)
         {
             if(item.second >= qty)
             {
-                return getCostPerUnit(it) * qty;
+                unsigned price = getCostPerUnit(it) * qty;
+
+                // mise à jour des ressources du vendeur
+                item.second -= qty;
+                money += price;
+
+                finishTransaction();
+                return price;
             }
         }
     }
+    finishTransaction();
     return 0;
 }
 

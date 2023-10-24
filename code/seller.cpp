@@ -29,6 +29,14 @@ ItemType Seller::chooseRandomItem(std::map<ItemType, int> &itemsForSale) {
     return out.front().first;
 }
 
+void Seller::startTransaction() {
+    resourcesMutex.lock();
+}
+
+void Seller::finishTransaction() {
+    resourcesMutex.unlock();
+}
+
 int getCostPerUnit(ItemType item) {
     switch (item) {
         case ItemType::Sand : return SAND_COST;
@@ -74,4 +82,4 @@ int getEmployeeSalary(EmployeeType employee) {
         case EmployeeType::Plasturgist : return PLASTIC_COST;
         default : return 0;
     }
-}
+} 

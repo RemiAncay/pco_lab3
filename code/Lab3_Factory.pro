@@ -22,6 +22,7 @@ SOURCES += \
     windowinterface.cpp
 
 HEADERS += \
+    constants.h \
     costs.h \
     display.h \
     extractor.h \

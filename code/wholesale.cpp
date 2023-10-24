@@ -4,6 +4,8 @@
 #include <iostream>
 #include <pcosynchro/pcothread.h>
 
+#include "constants.h"
+
 WindowInterface* Wholesale::interface = nullptr;
 
 Wholesale::Wholesale(int uniqueId, int fund)
@@ -53,7 +55,7 @@ void Wholesale::run() {
         interface->updateFund(uniqueId, money);
         interface->updateStock(uniqueId, &stocks);
         //Temps de pause pour espacer les demandes de ressources
-        PcoThread::usleep((rand() % 10 + 1) * 100000);
+        PcoThread::usleep((rand() % 10 + 1) * 10 * TIME_MULTIPLIER);
     }
     interface->consoleAppendText(uniqueId, "[STOP] Wholesaler routine");
 

@@ -2,6 +2,13 @@
 
 
 void Utils::endService() {
+    for(auto& e : extractors)
+        e->requestStop();
+    for(auto& f : factories)
+        f->requestStop();
+    for(auto& ws : wholesalers)
+        ws->requestStop();
+
     // TODO
     std::cout << "It's time to end !" << std::endl;
 }
@@ -10,7 +17,6 @@ void Utils::externalEndService() {
     endService();
     semEnd.acquire();
     utilsThread->join();
-
 }
 
 std::vector<Extractor*> createExtractors(int nbExtractors, int idStart) {

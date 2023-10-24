@@ -7,6 +7,8 @@
 #include <vector>
 #include "costs.h"
 
+#include <pcosynchro/pcomutex.h>
+
 enum class ItemType { Sand, Copper, Petrol, Chip, Plastic, Robot, Nothing};
 
 int getCostPerUnit(ItemType item);
@@ -75,7 +77,19 @@ protected:
     int money;
     int uniqueId;
 
+    /**
+     * @brief Indique qu'une transaction est en cours et que personne d'autre ne doit accéder aux resources
+     * Si une transaction est déjà en cours, cette méthode attendra la fin de l'autre transaction avant de se terminer.
+     */
+    void startTransaction();
+
+    /**
+     * @brief Indique que la transaction est terminée
+     */
+    void finishTransaction();
+
 private:
+    PcoMutex resourcesMutex;
     bool stopRequested; // privé car les classes dérivées ne devraient pas avoir le droit d'annuler l'arrêt
 };
 
