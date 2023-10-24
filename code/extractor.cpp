@@ -34,6 +34,8 @@ void Extractor::run() {
             continue;
         }
 
+        startTransaction();
+
         /* On peut payer un mineur */
         money -= minerCost;
         /* Temps aléatoire borné qui simule le mineur qui mine */
@@ -42,6 +44,9 @@ void Extractor::run() {
         nbExtracted++;
         /* Incrément des stocks */
         stocks[resourceExtracted] += 1;
+
+        finishTransaction();
+
         /* Message dans l'interface graphique */
         interface->consoleAppendText(uniqueId, QString("1 ") % getItemName(resourceExtracted) %
                                      " has been mined");

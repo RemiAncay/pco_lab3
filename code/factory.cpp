@@ -66,12 +66,27 @@ void Factory::buildItem() {
 }
 
 void Factory::orderResources() {
+    // pour chaque objet nécessaire à la production...
+    for (auto item : resourcesNeeded) {
+        // pour chaque grossiste disponible...
+        for(auto seller : wholesalers) {
+            // on commence une transaction
+            startTransaction();
+            auto cost = seller->trade(item, 1);
+            if(cost != 0) { // si le grossite en question a l'objet nécessaire...
+                // on effectue la transaction
+                money -= cost;
+                ++stocks[item];
 
-    // TODO - Itérer sur les resourcesNeeded et les wholesalers disponibles
+                // on passe à l'objet suivant
+                break;
+            }
+            finishTransaction();
+        }
+    }
 
     //Temps de pause pour éviter trop de demande
     PcoThread::usleep(10 * 10 * TIME_MULTIPLIER);
-
 }
 
 void Factory::run() {
