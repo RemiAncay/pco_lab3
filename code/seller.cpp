@@ -11,6 +11,29 @@ bool Seller::needsToStop() const {
     return stopRequested;
 }
 
+int Seller::trade(ItemType what, int qty) {
+    startTransaction();
+    for(auto& item : this->getItemsForSale())
+    {
+        if(item.first == what)
+        {
+            if(item.second >= qty)
+            {
+                unsigned price = getCostPerUnit(what) * qty;
+
+                // mise à jour des ressources du vendeur
+                item.second -= qty;
+                money += price;
+
+                finishTransaction();
+                return price;
+            }
+        }
+    }
+    finishTransaction();
+    return 0;
+}
+
 Seller *Seller::chooseRandomSeller(std::vector<Seller *> &sellers) {
     assert(sellers.size());
     std::vector<Seller*> out;

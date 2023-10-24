@@ -28,7 +28,6 @@ public:
     void run();
 
     std::map<ItemType, int> getItemsForSale() override;
-    int trade(ItemType it, int number) override;
 
     /**
      * @brief Permet d'accèder au coût du matériel produit par l'usine

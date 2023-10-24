@@ -20,31 +20,6 @@ std::map<ItemType, int> Extractor::getItemsForSale() {
     return stocks;
 }
 
-int Extractor::trade(ItemType it, int qty) {
-    // TODO
-    startTransaction();
-    for( auto item : this->getItemsForSale())
-    {
-        if(item.first == it)
-        {
-            if(item.second >= qty)
-            {
-                unsigned price = getCostPerUnit(it) * qty;
-
-                // mise à jour des ressources du vendeur
-                item.second -= qty;
-                money += price;
-
-                finishTransaction();
-                return price;
-            }
-        }
-    }
-
-    finishTransaction();
-    return 0;
-}
-
 void Extractor::run() {
     interface->consoleAppendText(uniqueId, "[START] Mine routine");
 

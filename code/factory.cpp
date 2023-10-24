@@ -94,29 +94,6 @@ std::map<ItemType, int> Factory::getItemsForSale() {
     return std::map<ItemType, int>({{itemBuilt, stocks[itemBuilt]}});
 }
 
-int Factory::trade(ItemType it, int qty) {
-    startTransaction();
-    for( auto item : this->getItemsForSale())
-    {
-        if(item.first == it)
-        {
-            if(item.second >= qty)
-            {
-                unsigned price = getCostPerUnit(it) * qty;
-
-                // mise à jour des ressources du vendeur
-                item.second -= qty;
-                money += price;
-
-                finishTransaction();
-                return price;
-            }
-        }
-    }
-    finishTransaction();
-    return 0;
-}
-
 int Factory::getAmountPaidToWorkers() {
     return Factory::nbBuild * getEmployeeSalary(getEmployeeThatProduces(itemBuilt));
 }

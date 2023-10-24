@@ -39,7 +39,7 @@ public:
      * @param Nombre de ressources voulant être achetées
      * @return La facture : côut de la ressource * le nombre, 0 si indisponible
      */
-    virtual int trade(ItemType what, int qty) = 0;
+    virtual int trade(ItemType what, int qty);
 
     /**
      * @brief Indique au Seller qu'il doit arrêter de travailler

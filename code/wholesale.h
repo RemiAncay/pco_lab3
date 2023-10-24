@@ -33,7 +33,6 @@ public:
     void run();
 
     std::map<ItemType, int> getItemsForSale() override;
-    int trade(ItemType it, int qty) override;
 
     /**
      * @brief Fonction permettant de lier des vendeurs

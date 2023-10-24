@@ -66,13 +66,6 @@ std::map<ItemType, int> Wholesale::getItemsForSale() {
     return stocks;
 }
 
-int Wholesale::trade(ItemType it, int qty) {
-
-    // TODO
-
-    return 0;
-}
-
 void Wholesale::setInterface(WindowInterface *windowInterface) {
     interface = windowInterface;
 }

@@ -20,7 +20,6 @@ public:
     Extractor(int uniqueId, int fund, ItemType resourceExtracted);
 
     std::map<ItemType, int> getItemsForSale() override;
-    int trade(ItemType it, int qty) override;
 
     /**
      * @brief Routine de minage de ressources (fonction threadée)
