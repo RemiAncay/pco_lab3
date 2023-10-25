@@ -4,8 +4,6 @@
 #include <iostream>
 #include <pcosynchro/pcothread.h>
 
-#include "constants.h"
-
 WindowInterface* Wholesale::interface = nullptr;
 
 Wholesale::Wholesale(int uniqueId, int fund)

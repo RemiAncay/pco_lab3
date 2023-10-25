@@ -3,8 +3,6 @@
 #include <random>
 #include <cassert>
 
-#include "constants.h"
-
 void Seller::requestStop() {
     stopRequested = true;
 }

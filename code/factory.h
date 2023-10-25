@@ -59,7 +59,7 @@ private:
     // Identifiant de l'objet produit par l'usine, selon l'enum ItemType
     const ItemType itemBuilt;
     // Compte le nombre d'employé payé
-    int nbBuild;
+    int nbItemsBuilt;
 
     static WindowInterface* interface;
 

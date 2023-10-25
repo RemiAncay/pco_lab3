@@ -2,8 +2,6 @@
 #include "costs.h"
 #include <pcosynchro/pcothread.h>
 
-#include "constants.h"
-
 WindowInterface* Extractor::interface = nullptr;
 
 Extractor::Extractor(int uniqueId, int fund, ItemType resourceExtracted)

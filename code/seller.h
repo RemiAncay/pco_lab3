@@ -77,6 +77,9 @@ protected:
     int money;
     int uniqueId;
 
+    static constexpr unsigned TIME_MULTIPLIER = 5000;
+    static constexpr int NO_TRADE = 0;
+
     /**
      * @brief Indique qu'une transaction est en cours et que personne d'autre ne doit accéder aux resources
      * Si une transaction est déjà en cours, cette méthode attendra la fin de l'autre transaction avant de se terminer.
