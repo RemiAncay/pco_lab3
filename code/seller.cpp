@@ -23,7 +23,7 @@ int Seller::trade(ItemType what, int qty) {
         if(stocks[what] >= qty){
             int totalPrice = getCostPerUnit(what) * qty;
             stocks[what] -= qty;
-            money += qty;
+            money += totalPrice;
             finishTransaction();
             return totalPrice;
         }
