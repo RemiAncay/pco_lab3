@@ -24,27 +24,22 @@ void Extractor::run() {
     interface->consoleAppendText(uniqueId, "[START] Mine routine");
 
     while (!needsToStop()) {
-        /* TODO concurrence */
-
         int minerCost = getEmployeeSalary(getEmployeeThatProduces(resourceExtracted));
-        if (money < minerCost) {
-            PcoThread::usleep(TIME_MULTIPLIER / 10);
-            continue;
-        }
-
-
-        /* Temps aléatoire borné qui simule le mineur qui mine */
-        PcoThread::usleep((rand() % 100 + 1) * TIME_MULTIPLIER);
-
-        startTransaction();
 
         if(money >= minerCost) {
+            PcoThread::usleep((rand() % 100 + 1) * TIME_MULTIPLIER);
+
+            startTransaction();
+
             money -= minerCost;
             nbExtracted++;
             stocks[resourceExtracted] += 1;
-        }
 
-        finishTransaction();
+            finishTransaction();
+        }
+        else {
+            PcoThread::usleep(TIME_MULTIPLIER / 10);
+        }
 
         interface->consoleAppendText(uniqueId, QString("1 ") % getItemName(resourceExtracted) %
                                      " has been mined");
