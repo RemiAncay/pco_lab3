@@ -1,3 +1,7 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #ifndef EXTRACTOR_H
 #define EXTRACTOR_H
 #include <QTimer>

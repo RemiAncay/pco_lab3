@@ -1,3 +1,7 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #ifndef SELLER_H
 #define SELLER_H
 

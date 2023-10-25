@@ -1,3 +1,7 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #include "factory.h"
 #include "extractor.h"
 #include "costs.h"

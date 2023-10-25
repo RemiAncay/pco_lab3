@@ -1,3 +1,7 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #ifndef FACTORY_H
 #define FACTORY_H
 #include <vector>

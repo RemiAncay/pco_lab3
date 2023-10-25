@@ -1,3 +1,7 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #ifndef WHOLESALE_H
 #define WHOLESALE_H
 #include "seller.h"

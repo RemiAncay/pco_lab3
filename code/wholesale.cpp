@@ -1,3 +1,7 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #include "wholesale.h"
 #include "factory.h"
 #include "costs.h"

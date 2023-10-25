@@ -1,3 +1,7 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #include "seller.h"
 #include <algorithm>
 #include <random>
@@ -14,15 +18,19 @@ bool Seller::needsToStop() const {
 int Seller::trade(ItemType what, int qty) {
     auto itemsForSale = getItemsForSale();
 
+    // L'objet demandé est-il à vendre ?
     if(itemsForSale.find(what) == itemsForSale.end())
         return NO_TRADE;
 
+    // L'objet demeandé est-il disponible ?
     if(stocks.find(what) == stocks.end())
         return NO_TRADE;
 
     startTransaction();
 
+    // L'objet demandé est-il disponible dans la bonne quantité ?
     if(stocks[what] >= qty){
+        // transaction
         int totalPrice = getCostPerUnit(what) * qty;
         stocks[what] -= qty;
         money += totalPrice;
