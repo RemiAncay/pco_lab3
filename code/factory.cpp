@@ -1,11 +1,13 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #include "factory.h"
 #include "extractor.h"
 #include "costs.h"
 #include "wholesale.h"
 #include <pcosynchro/pcothread.h>
 #include <iostream>
-
-#include "constants.h"
 
 WindowInterface* Factory::interface = nullptr;
 

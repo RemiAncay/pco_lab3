@@ -1,10 +1,12 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #include "wholesale.h"
 #include "factory.h"
 #include "costs.h"
 #include <iostream>
 #include <pcosynchro/pcothread.h>
-
-#include "constants.h"
 
 WindowInterface* Wholesale::interface = nullptr;
 

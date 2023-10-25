@@ -1,3 +1,7 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #ifndef SELLER_H
 #define SELLER_H
 
@@ -76,6 +80,9 @@ protected:
     std::map<ItemType, int> stocks;
     int money;
     int uniqueId;
+
+    static constexpr unsigned TIME_MULTIPLIER = 10000;
+    static constexpr int NO_TRADE = 0;
 
     /**
      * @brief Indique qu'une transaction est en cours et que personne d'autre ne doit accéder aux resources

@@ -1,8 +1,10 @@
+//
+// Modifié par Rémi Ançay et Lucas Charbonnier
+//
+
 #include "extractor.h"
 #include "costs.h"
 #include <pcosynchro/pcothread.h>
-
-#include "constants.h"
 
 WindowInterface* Extractor::interface = nullptr;
 
