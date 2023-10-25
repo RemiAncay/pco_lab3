@@ -9,7 +9,6 @@ void Utils::endService() {
     for(auto& ws : wholesalers)
         ws->requestStop();
 
-    // TODO
     std::cout << "It's time to end !" << std::endl;
 }
 
@@ -21,7 +20,7 @@ void Utils::externalEndService() {
 
 std::vector<Extractor*> createExtractors(int nbExtractors, int idStart) {
     if (nbExtractors < 1){
-        qInfo() << "Cannot make the programm work with less than 1 extractor";
+        qInfo() << "Cannot make the program work with less than 1 extractor";
         exit(-1);
     }
 
@@ -49,7 +48,7 @@ std::vector<Extractor*> createExtractors(int nbExtractors, int idStart) {
 
 std::vector<Factory*> createFactories(int nbFactories, int idStart) {
     if (nbFactories < 1){
-        qInfo() << "Cannot make the programm work with less than 1 Factory";
+        qInfo() << "Cannot make the program work with less than 1 Factory";
         exit(-1);
     }
 
@@ -77,7 +76,7 @@ std::vector<Factory*> createFactories(int nbFactories, int idStart) {
 
 std::vector<Wholesale*> createWholesaler(int nbWholesaler, int idStart) {
     if(nbWholesaler < 1){
-        qInfo() << "Cannot launch the programm without any wholesaler";
+        qInfo() << "Cannot launch the program without any wholesaler";
         exit(-1);
     }
 

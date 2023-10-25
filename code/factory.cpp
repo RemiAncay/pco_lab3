@@ -50,20 +50,26 @@ void Factory::buildItem() {
     auto employee = getEmployeeThatProduces(itemBuilt);
     auto cost = getEmployeeSalary(employee);
 
-    //Temps simulant l'assemblage d'un objet.
-    PcoThread::usleep((rand() % 100) * 10 * TIME_MULTIPLIER);
-
+    bool transactionSuccessful = false;
     // transaction
     startTransaction();
 
-    money -= cost;
-    ++stocks[itemBuilt];
+    if(money >= cost) {
+        money -= cost;
+        ++stocks[itemBuilt];
 
-    for(auto ingredient : resourcesNeeded) {
-        --stocks[ingredient];
+        for(auto ingredient : resourcesNeeded) {
+            --stocks[ingredient];
+        }
+
+        transactionSuccessful = true;
     }
 
     finishTransaction();
+
+    //Temps simulant l'assemblage d'un objet.
+    if(transactionSuccessful)
+        PcoThread::usleep((rand() % 100) * 10 * TIME_MULTIPLIER);
 }
 
 bool Factory::tryToBuildItem() {
