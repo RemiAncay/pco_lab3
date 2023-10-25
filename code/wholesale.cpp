@@ -25,27 +25,44 @@ void Wholesale::setSellers(std::vector<Seller*> sellers) {
 }
 
 void Wholesale::buyResources() {
-    auto s = Seller::chooseRandomSeller(sellers);
-    auto m = s->getItemsForSale();
-    auto i = Seller::chooseRandomItem(m);
+    auto seller = Seller::chooseRandomSeller(sellers);
+    auto itemsForSale = seller->getItemsForSale();
+    auto itemToBuy = Seller::chooseRandomItem(itemsForSale);
 
-    if (i == ItemType::Nothing) {
-        /* Nothing to buy... */
+    if (itemToBuy == ItemType::Nothing)
         return;
-    }
 
     int qty = rand() % 5 + 1;
-    int price = qty * getCostPerUnit(i);
+    int price = qty * getCostPerUnit(itemToBuy);
 
     interface->consoleAppendText(uniqueId, QString("I would like to buy %1 of ").arg(qty) %
-                                 getItemName(i) % QString(" which would cost me %1").arg(price));
-    /* TODO */
+                                 getItemName(itemToBuy) % QString(" which would cost me %1").arg(price));
+
+    startTransaction();
+
+    bool transactionSuccessful = false;
+    // si on a assez d'argent et que le vendeur peut nous vendre l'objet...
+    if(money >= price) {
+        if(seller->trade(itemToBuy, qty) != NO_TRADE) {
+            // on effectue la transaction
+            money -= price;
+            stocks[itemToBuy] += qty;
+            transactionSuccessful = true;
+        }
+    }
+
+    finishTransaction();
+
+    if(transactionSuccessful) {
+        interface->consoleAppendText(uniqueId, QString("I bought %1 of ").arg(qty) %
+                                     getItemName(itemToBuy) % QString(" which cost me %1 ! :)").arg(price));
+    }
 }
 
 void Wholesale::run() {
 
     if (sellers.empty()) {
-        std::cerr << "You have to give factories and mines to a wholeseler before launching is routine" << std::endl;
+        std::cerr << "You have to give factories and mines to a wholesaler before launching is routine" << std::endl;
         return;
     }
 

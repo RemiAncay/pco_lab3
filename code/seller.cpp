@@ -3,6 +3,8 @@
 #include <random>
 #include <cassert>
 
+#include "constants.h"
+
 void Seller::requestStop() {
     stopRequested = true;
 }
@@ -13,25 +15,21 @@ bool Seller::needsToStop() const {
 
 int Seller::trade(ItemType what, int qty) {
     startTransaction();
-    for(auto& item : this->getItemsForSale())
-    {
-        if(item.first == what)
-        {
-            if(item.second >= qty)
-            {
-                unsigned price = getCostPerUnit(what) * qty;
 
-                // mise à jour des ressources du vendeur
-                item.second -= qty;
-                money += price;
+    auto itemsForSale = getItemsForSale();
 
-                finishTransaction();
-                return price;
-            }
+    if(itemsForSale.find(what) != itemsForSale.end() &&
+       stocks.find(what) != stocks.end()) {
+        if(stocks[what] >= qty){
+            int totalPrice = getCostPerUnit(what) * qty;
+            stocks[what] -= qty;
+            money += qty;
+            finishTransaction();
+            return totalPrice;
         }
     }
     finishTransaction();
-    return 0;
+    return NO_TRADE;
 }
 
 Seller *Seller::chooseRandomSeller(std::vector<Seller *> &sellers) {

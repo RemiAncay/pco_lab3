@@ -77,8 +77,16 @@ private:
 
     /**
      * @brief Construction d'un objet par l'usine.
+     * Ne doit être appelé que si les ressources nécessaires sont
+     * disponibles, donc après avoir vérifié que verifyResources() retourne true.
      */
     void buildItem();
+
+    /**
+     * @brief Vérifie si les resources nécessaires à la fabrication d'un objet sont disponibles.
+     * Si oui, l'objet est fabriqué et la fonction retourne true. Sinon, la fonction retourne false.
+     */
+    bool tryToBuildItem();
 };
 
 

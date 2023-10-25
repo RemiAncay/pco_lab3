@@ -28,29 +28,26 @@ void Extractor::run() {
 
         int minerCost = getEmployeeSalary(getEmployeeThatProduces(resourceExtracted));
         if (money < minerCost) {
-            /* Pas assez d'argent */
-            /* Attend des jours meilleurs */
             PcoThread::usleep(TIME_MULTIPLIER / 10);
             continue;
         }
 
-        startTransaction();
 
-        /* On peut payer un mineur */
-        money -= minerCost;
         /* Temps aléatoire borné qui simule le mineur qui mine */
         PcoThread::usleep((rand() % 100 + 1) * TIME_MULTIPLIER);
-        /* Statistiques */
-        nbExtracted++;
-        /* Incrément des stocks */
-        stocks[resourceExtracted] += 1;
+
+        startTransaction();
+
+        if(money >= minerCost) {
+            money -= minerCost;
+            nbExtracted++;
+            stocks[resourceExtracted] += 1;
+        }
 
         finishTransaction();
 
-        /* Message dans l'interface graphique */
         interface->consoleAppendText(uniqueId, QString("1 ") % getItemName(resourceExtracted) %
                                      " has been mined");
-        /* Update de l'interface graphique */
         interface->updateFund(uniqueId, money);
         interface->updateStock(uniqueId, &stocks);
     }

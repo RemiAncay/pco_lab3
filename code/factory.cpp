@@ -47,43 +47,60 @@ bool Factory::verifyResources() {
 }
 
 void Factory::buildItem() {
+    auto employee = getEmployeeThatProduces(itemBuilt);
+    auto cost = getEmployeeSalary(employee);
+
+    //Temps simulant l'assemblage d'un objet.
+    PcoThread::usleep((rand() % 100) * 10 * TIME_MULTIPLIER);
+
+    // transaction
     startTransaction();
 
-    if(verifyResources()) {
-        auto employee = getEmployeeThatProduces(itemBuilt);
-        auto cost = getEmployeeSalary(employee);
+    money -= cost;
+    ++stocks[itemBuilt];
 
-        //Temps simulant l'assemblage d'un objet.
-        PcoThread::usleep((rand() % 100) * 10 * TIME_MULTIPLIER);
-
-        money -= cost;
-        ++stocks[itemBuilt];
-
-        interface->consoleAppendText(uniqueId, "Factory have build a new object");
+    for(auto ingredient : resourcesNeeded) {
+        --stocks[ingredient];
     }
 
     finishTransaction();
 }
 
-void Factory::orderResources() {
-    // pour chaque objet nécessaire à la production...
-    for (auto item : resourcesNeeded) {
-        // pour chaque grossiste disponible...
-        for(auto seller : wholesalers) {
-            // on commence une transaction
-            startTransaction();
-            auto cost = seller->trade(item, 1);
-            if(cost != 0) { // si le grossite en question a l'objet nécessaire...
-                // on effectue la transaction
-                money -= cost;
-                ++stocks[item];
+bool Factory::tryToBuildItem() {
+    if(verifyResources()) {
+        buildItem();
+        return true;
+    }
+    return false;
+}
 
-                // on passe à l'objet suivant
+static bool compareResources(const std::pair<ItemType, int>& res1, const std::pair<ItemType, int>& res2) {
+    // tri par disponibilité
+    return res1.second < res2.second;
+}
+
+void Factory::orderResources() {
+    std::vector<std::pair<ItemType, int>> ingredientsAvailability;
+    for(auto ingredient : resourcesNeeded)
+        ingredientsAvailability.push_back({ingredient, stocks[ingredient]});
+    std::sort(ingredientsAvailability.begin(), ingredientsAvailability.end(), compareResources);
+
+    auto item = ingredientsAvailability.front().first;
+
+    startTransaction();
+
+    if(money >= getCostPerUnit(item)) {
+        for(auto seller : wholesalers) {
+            int totalPrice = seller->trade(item,1);
+            if(totalPrice != NO_TRADE) {
+                money -= totalPrice;
+                ++stocks[item];
                 break;
             }
-            finishTransaction();
         }
     }
+
+    finishTransaction();
 
     //Temps de pause pour éviter trop de demande
     PcoThread::usleep(10 * 10 * TIME_MULTIPLIER);
@@ -98,11 +115,13 @@ void Factory::run() {
     interface->consoleAppendText(uniqueId, "[START] Factory routine");
 
     while (!needsToStop()) {
-        if (verifyResources()) {
-            buildItem();
-        } else {
+        if(tryToBuildItem()) {
+            interface->consoleAppendText(uniqueId, "Factory have build a new object");
+        }
+        else {
             orderResources();
         }
+
         interface->updateFund(uniqueId, money);
         interface->updateStock(uniqueId, &stocks);
     }
