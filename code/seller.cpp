@@ -14,20 +14,26 @@ bool Seller::needsToStop() const {
 }
 
 int Seller::trade(ItemType what, int qty) {
-    startTransaction();
-
     auto itemsForSale = getItemsForSale();
 
-    if(itemsForSale.find(what) != itemsForSale.end() &&
-       stocks.find(what) != stocks.end()) {
-        if(stocks[what] >= qty){
-            int totalPrice = getCostPerUnit(what) * qty;
-            stocks[what] -= qty;
-            money += totalPrice;
-            finishTransaction();
-            return totalPrice;
-        }
+    if(itemsForSale.find(what) == itemsForSale.end())
+        return NO_TRADE;
+
+    if(stocks.find(what) == stocks.end())
+        return NO_TRADE;
+
+    startTransaction();
+
+    if(stocks[what] >= qty){
+        int totalPrice = getCostPerUnit(what) * qty;
+        stocks[what] -= qty;
+        money += totalPrice;
+
+        finishTransaction();
+
+        return totalPrice;
     }
+
     finishTransaction();
     return NO_TRADE;
 }

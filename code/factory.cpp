@@ -11,7 +11,7 @@ WindowInterface* Factory::interface = nullptr;
 
 
 Factory::Factory(int uniqueId, int fund, ItemType builtItem, std::vector<ItemType> resourcesNeeded)
-    : Seller(fund, uniqueId), resourcesNeeded(resourcesNeeded), itemBuilt(builtItem), nbBuild(0)
+    : Seller(fund, uniqueId), resourcesNeeded(resourcesNeeded), itemBuilt(builtItem), nbItemsBuilt(0)
 {
     assert(builtItem == ItemType::Chip ||
            builtItem == ItemType::Plastic ||
@@ -51,12 +51,13 @@ void Factory::buildItem() {
     auto cost = getEmployeeSalary(employee);
 
     bool transactionSuccessful = false;
-    // transaction
+
     startTransaction();
 
     if(money >= cost) {
         money -= cost;
         ++stocks[itemBuilt];
+        ++nbItemsBuilt;
 
         for(auto ingredient : resourcesNeeded) {
             --stocks[ingredient];
@@ -81,17 +82,17 @@ bool Factory::tryToBuildItem() {
 }
 
 static bool compareResources(const std::pair<ItemType, int>& res1, const std::pair<ItemType, int>& res2) {
-    // tri par disponibilité
+    // tri par disponibilité, les ressources les moins abondantes d'abord
     return res1.second < res2.second;
 }
 
 void Factory::orderResources() {
-    std::vector<std::pair<ItemType, int>> ingredientsAvailability;
+    std::vector<std::pair<ItemType, int>> ingredientsPriority;
     for(auto ingredient : resourcesNeeded)
-        ingredientsAvailability.push_back({ingredient, stocks[ingredient]});
-    std::sort(ingredientsAvailability.begin(), ingredientsAvailability.end(), compareResources);
+        ingredientsPriority.push_back({ingredient, stocks[ingredient]});
+    std::sort(ingredientsPriority.begin(), ingredientsPriority.end(), compareResources);
 
-    auto item = ingredientsAvailability.front().first;
+    auto item = ingredientsPriority.front().first;
 
     startTransaction();
 
@@ -113,16 +114,15 @@ void Factory::orderResources() {
 }
 
 void Factory::run() {
-
     if (wholesalers.empty()) {
-        std::cerr << "You have to give to factories wholesalers to sales their resources" << std::endl;
+        std::cerr << "You have to give factories wholesalers to sell their resources" << std::endl;
         return;
     }
     interface->consoleAppendText(uniqueId, "[START] Factory routine");
 
     while (!needsToStop()) {
         if(tryToBuildItem()) {
-            interface->consoleAppendText(uniqueId, "Factory have build a new object");
+            interface->consoleAppendText(uniqueId, "Factory has built a new object");
         }
         else {
             orderResources();
@@ -139,7 +139,7 @@ std::map<ItemType, int> Factory::getItemsForSale() {
 }
 
 int Factory::getAmountPaidToWorkers() {
-    return Factory::nbBuild * getEmployeeSalary(getEmployeeThatProduces(itemBuilt));
+    return Factory::nbItemsBuilt * getEmployeeSalary(getEmployeeThatProduces(itemBuilt));
 }
 
 void Factory::setInterface(WindowInterface *windowInterface) {

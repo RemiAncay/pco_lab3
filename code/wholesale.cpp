@@ -32,6 +32,9 @@ void Wholesale::buyResources() {
     if (itemToBuy == ItemType::Nothing)
         return;
 
+    // note : la stratégie de choisir aléatoirement le nombre d'objets à acheter va faire que les grossistes n'achèteront
+    // quasi jamais de robots car il faut beaucoup de robots donc peu de chances qu'une usine aie déjà 3 ou 4 robots à
+    // disposition d'un coup.
     int qty = rand() % 5 + 1;
     int price = qty * getCostPerUnit(itemToBuy);
 

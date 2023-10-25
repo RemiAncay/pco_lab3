@@ -6,7 +6,7 @@
 // les calculs de temps d'attente l'utilisation de la constante suivante.
 // Elle spécifie le nombre de microsecondes réelles dans 10000 microsecondes dans la simulation.
 // Avec la valeur 10000, le temps s'écoulera normalement. Avec la valeur 1000, tout ira 10 fois plus vite.
-static constexpr unsigned TIME_MULTIPLIER = 10000;
+static constexpr unsigned TIME_MULTIPLIER = 5000;
 static constexpr int NO_TRADE = 0;
 
 #endif // CONSTANTS_H
