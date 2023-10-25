@@ -81,7 +81,7 @@ protected:
     int money;
     int uniqueId;
 
-    static constexpr unsigned TIME_MULTIPLIER = 5000;
+    static constexpr unsigned TIME_MULTIPLIER = 10000;
     static constexpr int NO_TRADE = 0;
 
     /**
